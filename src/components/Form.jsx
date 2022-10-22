@@ -12,7 +12,7 @@ export default function Form() {
   const [definitiva, setDefinitiva] = useState("");
 
   // Funcion
-  function handleSubmit(event) {
+  function calcular(event) {
     event.preventDefault();
     if (
       id !== "" &&
@@ -20,8 +20,7 @@ export default function Form() {
       course !== "" &&
       noteOne !== "" &&
       noteTwo !== "" &&
-      noteThree !== "" &&
-      observaciones !== ""
+      noteThree !== ""
     ) {
       if (
         noteOne < 0 ||
@@ -31,20 +30,28 @@ export default function Form() {
         noteThree < 0 ||
         noteThree > 5
       ) {
-        alert("Las notas deben ser mayores que 0 y menores que 5");
+        setObservaciones("Las notas deben ser mayores que 0 y menores que 5");
       } else {
         setDefinitiva(
-          parseFloat(noteOne * 0.3) +
-            parseFloat(noteTwo * 0.35) +
-            parseFloat(noteThree * 0.35)
+          (parseFloat(noteOne)* 0.3) +
+            (parseFloat(noteTwo)* 0.35) +
+            (parseFloat(noteThree)* 0.35)
         );
+        if (definitiva < 2) {
+          setObservaciones("Perdio");
+        } else if (definitiva >= 2 && definitiva < 3) {
+          setObservaciones("Habilito");
+        } else {
+          setObservaciones("Gano");
+        }
       }
     } else {
-      alert("Todos los datos son obligatorios");
+      setObservaciones("Debe rellenar todos los campos");
     }
   }
 
-  function limpiar() {
+  function limpiar(event) {
+    event.preventDefault();
     setId("");
     setName("");
     setCourse("");
@@ -67,29 +74,31 @@ export default function Form() {
         <div className="col-sm-12 col-md-6 mx-auto">
           <form className="p-4 shadow rounded-3 bg-light">
             <h1 className="lead text-center mb-5">Formulario de notas</h1>
-            <div className="form-floating   mb-3">
-              <input
-                type="text"
-                id="id"
-                name="id"
-                className="form-control"
-                placeholder="1001011144"
-                onChange={(e) => setId(e.target.value)}
-                value={id}
-              />
-              <label htmlFor="identificacion">Identificacion</label>
-            </div>
-            <div className="form-floating mb-3">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className="form-control"
-                placeholder="Juan Felipe Quintero Gutierrez"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-              />
-              <label htmlFor="nombre">Nombre</label>
+            <div className="row">
+              <div className="form-floating mb-3 col-sm-12 col-md-6">
+                <input
+                  type="text"
+                  id="id"
+                  name="id"
+                  className="form-control"
+                  placeholder="1001011144"
+                  onChange={(e) => setId(e.target.value)}
+                  value={id}
+                />
+                <label htmlFor="identificacion">Identificacion</label>
+              </div>
+              <div className="form-floating mb-3 col-sm-12 col-md-6">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className="form-control"
+                  placeholder="Juan Felipe Quintero Gutierrez"
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
+                />
+                <label htmlFor="nombre">Nombre</label>
+              </div>
             </div>
             <div className="form-floating mb-3">
               <input
@@ -103,62 +112,45 @@ export default function Form() {
               />
               <label htmlFor="asignatura">Asignatura</label>
             </div>
-            <div className="form-floating mb-3">
-              <input
-                type="number"
-                id="noteOne"
-                name="noteOne"
-                className="form-control"
-                placeholder="4.0"
-                maxLength={1}
-                onChange={(e) => setNoteOne(e.target.value)}
-                value={noteOne}
-              />
-              <label htmlFor="notaUno">Nota 1 (30%)</label>
+            <div className="row">
+              <div className="form-floating mb-3 col-sm-12 col-md-4">
+                <input
+                  type="number"
+                  id="noteOne"
+                  name="noteOne"
+                  className="form-control"
+                  placeholder="4.0"
+                  onChange={(e) => setNoteOne(e.target.value)}
+                  value={noteOne}
+                />
+                <label htmlFor="notaUno">Nota 1 (30%)</label>
+              </div>
+              <div className="form-floating mb-3 col-sm-12 col-md-4">
+                <input
+                  type="number"
+                  id="noteTwo"
+                  name="noteTwo"
+                  className="form-control"
+                  placeholder="4.0"
+                  onChange={(e) => setNoteTwo(e.target.value)}
+                  value={noteTwo}
+                />
+                <label htmlFor="notaDos">Nota 2 (35%)</label>
+              </div>
+              <div className="form-floating mb-3 col-sm-12 col-md-4">
+                <input
+                  type="number"
+                  id="noteThree"
+                  name="noteThree"
+                  className="form-control"
+                  placeholder="4.0"
+                  onChange={(e) => setNoteThree(e.target.value)}
+                  value={noteThree}
+                />
+                <label htmlFor="notaTres">Nota 3 (35%)</label>
+              </div>
             </div>
-            <div className="form-floating mb-3">
-              <input
-                type="number"
-                id="noteTwo"
-                name="noteTwo"
-                className="form-control"
-                placeholder="4.0"
-                maxLength={1}
-                onChange={(e) => setNoteTwo(e.target.value)}
-                value={noteTwo}
-              />
-              <label htmlFor="notaDos">Nota 2 (35%)</label>
-            </div>
-            <div className="form-floating mb-3">
-              <input
-                type="number"
-                id="noteThree"
-                name="noteThree"
-                className="form-control"
-                placeholder="4.0"
-                maxLength={1}
-                onChange={(e) => setNoteThree(e.target.value)}
-                value={noteThree}
-              />
-              <label htmlFor="notaTres">Nota 3 (35%)</label>
-            </div>
-            <div className="form-floating mb-3">
-              <textarea
-                cols="30"
-                rows="10"
-                id="noteTwo"
-                name="noteTwo"
-                className="form-control"
-                placeholder="4.0"
-                onChange={(e) => setObservaciones(e.target.value)}
-                value={observaciones}
-              ></textarea>
-              <label htmlFor="observaciones">Observaciones</label>
-            </div>
-            <button
-              className="mx-2 btn btn-md btn-success"
-              onClick={handleSubmit}
-            >
+            <button className="mx-2 btn btn-md btn-success" onClick={calcular}>
               Calcular
             </button>
             <button className="mx-2 btn btn-md btn-primary" onClick={limpiar}>
@@ -177,6 +169,20 @@ export default function Form() {
                 value={definitiva}
               />
               <label htmlFor="noteThree">Defintiva</label>
+            </div>
+            <div className="form-floating mb-3">
+              <textarea
+                cols="30"
+                rows="10"
+                id="noteTwo"
+                name="noteTwo"
+                className="form-control"
+                placeholder="4.0"
+                readOnly
+                onChange={(e) => setObservaciones(e.target.value)}
+                value={observaciones}
+              ></textarea>
+              <label htmlFor="observaciones">Observaciones</label>
             </div>
           </form>
         </div>
